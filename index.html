@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Management System</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+  <aside class="sidebar" id="sidebar">
+    <div>
+      <div class="sidebar-header-wrapper">
+        <a href="#" class="sidebar-brand">
+          <i class="bi bi-hospital fs-4"></i>
+          <span>MediCare</span>
+        </a>
+        <button class="btn btn-sm text-white d-xl-none p-0" id="sidebar-close-btn" aria-label="Close Sidebar">
+          <i class="bi bi-x-lg fs-5"></i>
+        </button>
+      </div>
+
+      <ul class="sidebar-nav">
+        <li class="sidebar-item">
+          <a href="#" class="sidebar-link">
+            <i class="bi bi-speedometer2"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="sidebar-item active">
+          <a href="#" class="sidebar-link">
+            <i class="bi bi-people-fill"></i>
+            <span>Patient</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="#" class="sidebar-link">
+            <i class="bi bi-hourglass-split"></i>
+            <span>Queue</span>
+            <span class="sidebar-badge">2</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="#" class="sidebar-link">
+            <i class="bi bi-chat-dots-fill"></i>
+            <span>Consultation</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="#" class="sidebar-link">
+            <i class="bi bi-box-seam-fill"></i>
+            <span>Warehouse</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="#" class="sidebar-link">
+            <i class="bi bi-bar-chart-fill"></i>
+            <span>Reports</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="#" class="sidebar-link">
+            <i class="bi bi-calendar-check-fill"></i>
+            <span>Appointment</span>
+            <span class="sidebar-badge">5</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="#" class="sidebar-link">
+            <i class="bi bi-gear-fill"></i>
+            <span>Settings</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="pro-card">
+        <h6>Update to Pro</h6>
+        <p>Unlock advanced clinic analytics and multi-branch synchronization.</p>
+        <button class="btn btn-pro-upgrade" onclick="alert('Upgraded to Pro version!')">Upgrade</button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-content-wrapper">
+
+    <header class="top-header">
+      <div class="d-flex align-items-center gap-3">
+        <button class="btn btn-sm btn-light d-xl-none" id="mobile-menu-toggle" aria-label="Toggle Navigation">
+          <i class="bi bi-list fs-5"></i>
+        </button>
+        <div>
+          <h1 class="page-title">患者管理</h1>
+          <p class="page-subtitle">Patient Management System</p>
+        </div>
+      </div>
+
+      <div class="d-flex align-items-center gap-3">
+        <div class="input-group header-search-box">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+          <input type="text" id="search-input" class="form-control" placeholder="Search" aria-label="Search patients" />
+        </div>
+
+        <button class="btn btn-primary-custom" data-bs-toggle="modal" data-bs-target="#addPatientModal">
+          <i class="bi bi-plus-lg"></i>
+          <span class="d-none d-sm-inline">Add Patient</span>
+        </button>
+
+        <div class="user-profile-widget">
+          <div class="avatar-circle" style="background-color: #E8F0FE; color: #0052CC;">
+            SL
+          </div>
+          <div>
+            <div class="user-profile-name">Dr. Sarah Lin</div>
+            <div class="user-profile-role">Senior Officer</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="p-4">
+      <div class="patient-table-card">
+
+        <div class="p-3 border-bottom d-flex align-items-center justify-content-between flex-wrap gap-2">
+          <span class="fw-semibold">Patient Directory</span>
+          <div class="d-flex align-items-center gap-2">
+            <select id="filter-country" class="form-select form-select-sm" style="width: auto;">
+              <option value="">All Nationalities</option>
+              <option value="Singapore">🇸🇬 Singapore</option>
+              <option value="Malaysia">🇲🇾 Malaysia</option>
+              <option value="China">🇨🇳 China</option>
+              <option value="Japan">🇯🇵 Japan</option>
+              <option value="United Kingdom">🇬🇧 United Kingdom</option>
+              <option value="United States">🇺🇸 United States</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table patient-table align-middle mb-0">
+            <thead>
+              <tr>
+                <th onclick="sortTable('name')" style="cursor: pointer;">
+                  Patient Name <i class="bi bi-arrow-down-up ms-1 text-muted" style="font-size: 11px;"></i>
+                </th>
+                <th>Contact</th>
+                <th onclick="sortTable('country')" style="cursor: pointer;">
+                  Nationality <i class="bi bi-arrow-down-up ms-1 text-muted" style="font-size: 11px;"></i>
+                </th>
+                <th onclick="sortTable('datetime')" style="cursor: pointer;">
+                  Datetime <i class="bi bi-arrow-down-up ms-1 text-muted" style="font-size: 11px;"></i>
+                </th>
+                <th class="text-center" style="width: 60px;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="patient-tbody"></tbody>
+          </table>
+        </div>
+
+        <div class="table-pagination-footer">
+          <span id="page-counter">Showing 1 to 5 of 8 results</span>
+          <div class="btn-group btn-group-sm" id="pagination-buttons"></div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <div class="offcanvas offcanvas-end offcanvas-patient" tabindex="-1" id="patientDetailDrawer"
+    aria-labelledby="patientDetailDrawerLabel">
+    <div class="offcanvas-header border-bottom">
+      <h5 class="offcanvas-title fw-bold" id="patientDetailDrawerLabel">Patient Details</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body" id="patient-detail-content">
+      <div class="d-flex align-items-center gap-3 pb-3 border-bottom mb-3">
+        <div class="avatar-circle avatar-circle-lg" id="detail-avatar"></div>
+        <div>
+          <div class="d-flex align-items-center">
+            <h5 class="fw-bold mb-0" id="detail-name"></h5>
+            <span id="detail-vip-badge" class="badge-vip ms-2 d-none">
+              <i class="bi bi-star-fill" style="font-size: 9px;"></i> VIP Patient
+            </span>
+            <span id="detail-regular-badge" class="badge bg-light text-secondary ms-2">Regular</span>
+          </div>
+          <div class="text-secondary small font-monospace" id="detail-id"></div>
+        </div>
+      </div>
+
+      <div class="small fw-bold text-uppercase text-secondary mb-2">Personal Details</div>
+
+      <div class="patient-meta-row">
+        <span class="patient-meta-label">Contact Number</span>
+        <span class="patient-meta-value"><a href="#" id="detail-phone" class="text-decoration-none"></a></span>
+      </div>
+
+      <div class="patient-meta-row">
+        <span class="patient-meta-label">Email</span>
+        <span class="patient-meta-value" id="detail-email"></span>
+      </div>
+
+      <div class="patient-meta-row">
+        <span class="patient-meta-label">Nationality</span>
+        <span class="patient-meta-value">
+          <span id="detail-flag"></span>
+          <span id="detail-country"></span>
+        </span>
+      </div>
+
+      <div class="patient-meta-row">
+        <span class="patient-meta-label">Birthday & Age</span>
+        <span class="patient-meta-value" id="detail-birthday-age"></span>
+      </div>
+
+      <div class="patient-meta-row">
+        <span class="patient-meta-label">NRIC / Passport</span>
+        <span class="patient-meta-value font-monospace" id="detail-nric"></span>
+      </div>
+
+      <div class="patient-meta-row">
+        <span class="patient-meta-label">Occupation</span>
+        <span class="patient-meta-value" id="detail-occupation"></span>
+      </div>
+
+      <div class="patient-meta-row mb-3">
+        <span class="patient-meta-label">Last Visit Date</span>
+        <span class="patient-meta-value" id="detail-last-visit"></span>
+      </div>
+
+      <div class="small fw-bold text-uppercase text-secondary mb-2">Medical Remarks</div>
+      <div class="alert alert-warning py-2 px-3 small mb-4">
+        <i class="bi bi-exclamation-triangle-fill me-1"></i>
+        <strong>Allergies & Notes:</strong> <span id="detail-remarks"></span>
+      </div>
+
+      <div class="small fw-bold text-uppercase text-secondary mb-2">Upcoming Appointments</div>
+      <div id="detail-appointments-list"></div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="addPatientModal" tabindex="-1" aria-labelledby="addPatientModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold" id="addPatientModalLabel">Add New Patient</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="add-patient-form">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="input-name" class="form-label small fw-semibold">Full Name <span
+                  class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="input-name" required placeholder="e.g. John Doe">
+            </div>
+            <div class="mb-3">
+              <label for="input-phone" class="form-label small fw-semibold">Contact (Phone with Country Code) <span
+                  class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="input-phone" required placeholder="e.g. +65 9123 4567">
+            </div>
+            <div class="mb-3">
+              <label for="input-country" class="form-label small fw-semibold">Nationality</label>
+              <select class="form-select" id="input-country">
+                <option value="Singapore">Singapore (🇸🇬)</option>
+                <option value="Malaysia">Malaysia (🇲🇾)</option>
+                <option value="China">China (🇨🇳)</option>
+                <option value="Japan">Japan (🇯🇵)</option>
+                <option value="United Kingdom">United Kingdom (🇬🇧)</option>
+                <option value="United States">United States (🇺🇸)</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="input-nric" class="form-label small fw-semibold">NRIC / Passport</label>
+              <input type="text" class="form-control" id="input-nric" placeholder="e.g. S9123456A">
+            </div>
+            <div class="mb-3">
+              <label for="input-remarks" class="form-label small fw-semibold">Medical Remarks & Allergies</label>
+              <textarea class="form-control" id="input-remarks" rows="2"
+                placeholder="e.g. Penicillin allergy, mild hypertension"></textarea>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="input-vip">
+              <label class="form-check-label small" for="input-vip">
+                Assign VIP Status
+              </label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary-custom btn-sm">Save Patient</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <template id="patient-row-template">
+    <tr class="patient-row">
+      <td>
+        <div class="d-flex align-items-center gap-2">
+          <div class="avatar-circle row-avatar"></div>
+          <div>
+            <div class="d-flex align-items-center">
+              <span class="fw-semibold row-name"></span>
+              <span class="badge-vip ms-1 row-vip d-none">
+                <i class="bi bi-star-fill" style="font-size: 8px;"></i> VIP
+              </span>
+            </div>
+            <div class="patient-id-sub row-id"></div>
+          </div>
+        </div>
+      </td>
+      <td class="row-phone"></td>
+      <td>
+        <span class="row-flag"></span>
+        <span class="ms-1 row-country"></span>
+      </td>
+      <td class="text-secondary small row-datetime"></td>
+      <td class="text-center action-cell">
+        <div class="dropdown">
+          <button class="btn btn-action-dots" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-three-dots-vertical"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+            <li>
+              <button class="dropdown-item small btn-view-profile" type="button">
+                <i class="bi bi-person me-2"></i> View Profile
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item small btn-toggle-vip" type="button">
+                <i class="bi bi-star me-2"></i> <span class="toggle-vip-label">Toggle VIP</span>
+              </button>
+            </li>
+            <li>
+              <hr class="dropdown-divider my-1">
+            </li>
+            <li>
+              <button class="dropdown-item small text-danger btn-delete-patient" type="button">
+                <i class="bi bi-trash me-2"></i> Delete Patient
+              </button>
+            </li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+  </template>
+
+  <template id="appointment-card-template">
+    <div class="appointment-card-item">
+      <div class="d-flex align-items-center justify-content-between mb-1">
+        <span class="badge bg-primary-subtle text-primary fw-bold apt-badge" style="font-size: 11px;">
+          <i class="bi bi-clock me-1"></i> <span class="apt-date"></span>
+        </span>
+        <span class="badge bg-success-subtle text-success" style="font-size: 11px;">Confirmed</span>
+      </div>
+      <div class="apt-title"></div>
+      <div class="apt-doctor"><i class="bi bi-person-badge me-1"></i> <span class="apt-doctor-name"></span></div>
+      <div class="apt-symptoms"></div>
+    </div>
+  </template>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+
+</html>
